@@ -60,3 +60,47 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "registry.configName" -}}
+{{- if .Values.fullnameOverride }}
+{{- printf "%s-config" .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-config" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-config" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- define "registry.calculateConfig" -}}
+{{ tpl (mergeOverwrite (tpl .Values.registry.config.unstructuredConfig . | fromYaml) .Values.registry.config.structuredConfig | toYaml) . }}
+{{- end }}
+
+{{- define "registry.configLog" }}
+{{- if .Values.registry.log }}
+log:
+  {{- with .Values.registry.log.accessLog }}
+  accesslog:
+    {{ toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.registry.log.level }}
+  level: {{ . }}
+  {{- end }}
+  {{- with .Values.registry.log.formatter }}
+  formatter: {{ . }}
+  {{- end }}
+  {{- with .Values.registry.log.fields }}
+  fields:
+    {{ toYaml . | nindent 4 }}
+  {{- end }}
+  {{ $smtp := .Values.registry.log.hooksSettings.smtpCredentials }}
+  {{- with .Values.registry.log.hooksSettings.hooks }}
+  hooks:
+    {{ range $k := . }}
+    - {{ merge . (dict "smtp" $smtp) | toYaml | nindent 6 }}
+    {{ end }}
+  {{- end }}
+{{- end }}
+{{- end }}

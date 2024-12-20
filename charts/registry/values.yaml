@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: registry
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -13,6 +13,48 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+
+registry:
+  config:
+    kind: ConfigMap
+    labels: {}
+    annotations: {}
+
+    configVersion: 0.1
+
+    # Structured config will completely overwrite content of unstructuredConfig
+    structuredConfig: {}
+
+    # Templated config for Distribution Registry
+    # ref: https://distribution.github.io/distribution/about/configuration
+    unstructuredConfig: |
+      version: {{ .Values.registry.config.configVersion }}
+      {{- include "registry.configLog" . }}
+  # ref: https://distribution.github.io/distribution/about/configuration/#log
+  log:
+    accessLog:
+      disabled: true
+    level: debug
+    formatter: json
+    fields:
+      releaseName: "{{ .Release.Name }}"
+      appVersion: "{{ .Chart.AppVersion }}"
+      chartVersion: "{{ .Chart.Version }}"
+    hooksSettings:
+      smtpCredentials:
+        addr: mail.example.com:25
+        username: mailuser
+        password: password
+        insecure: true
+      hooks:
+#        - type: mail
+#          disabled: true
+#          levels:
+#            - panic
+#          options:
+#            from: sender@example.com
+#            to:
+#              - errors@example.com
 
 serviceAccount:
   # Specifies whether a service account should be created

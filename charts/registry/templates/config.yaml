@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: {{ .Values.registry.config.kind }}
+metadata:
+  name: {{ include "registry.configName" . }}
+  labels:
+    {{- include "registry.labels" . | nindent 4 }}
+{{- if eq .Values.registry.config.kind "Secret" }}
+type: Opaque
+data:
+  config: {{ include "registry.calculateConfig" . | b64enc }}
+{{- else }}
+data:
+  config: |
+    {{- include "registry.calculateConfig" . | nindent 4 }}
+{{- end }}
