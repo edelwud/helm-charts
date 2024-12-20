@@ -48,7 +48,9 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: config
-              mountPath: /etc/distribution
+              mountPath: /etc/distribution/config.yml
+              subPath: config.yml
+              readOnly: true
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -61,6 +63,9 @@ spec:
           {{- if eq .Values.registry.config.kind "ConfigMap" }}
           configMap:
             name: {{ include "registry.configName" . }}
+            items:
+              - key: config.yml
+                path: config.yml
           {{- end }}
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
