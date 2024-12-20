@@ -3,6 +3,24 @@ entries:
   registry:
   - apiVersion: v2
     appVersion: 2.8.3
+    created: "2024-12-20T03:32:54.142819215Z"
+    description: Helm chart that provides deployment of Distribution Registry in Kubernetes
+      environment
+    digest: 2c20be4113fbc8894454b1156f877152edbb8e40669fb06bdc0f69138f435f72
+    home: https://edelwud.github.io/helm-charts
+    icon: https://distribution.github.io/distribution/brand.svg
+    maintainers:
+    - email: yersh.maks@gmail.com
+      name: edelwud
+    name: registry
+    sources:
+    - https://github.com/distribution/distribution/
+    type: application
+    urls:
+    - https://github.com/edelwud/helm-charts/releases/download/registry-0.2.0/registry-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 2.8.3
     created: "2024-12-20T02:46:57.29206273Z"
     description: Helm chart that provides deployment of Distribution Registry in Kubernetes
       environment
@@ -19,4 +37,4 @@ entries:
     urls:
     - https://github.com/edelwud/helm-charts/releases/download/registry-0.1.0/registry-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-20T02:46:57.292074091Z"
+generated: "2024-12-20T03:32:54.142835566Z"
