@@ -7,9 +7,9 @@ metadata:
 {{- if eq .Values.registry.config.kind "Secret" }}
 type: Opaque
 data:
-  config: {{ include "registry.calculateConfig" . | b64enc }}
+  config.yml: {{ include "registry.calculateConfig" . | b64enc }}
 {{- else }}
 data:
-  config: |
+  config.yml: |
     {{- include "registry.calculateConfig" . | nindent 4 }}
 {{- end }}
