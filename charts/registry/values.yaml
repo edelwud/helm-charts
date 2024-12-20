@@ -129,7 +129,7 @@ registry:
 
     # ref: https://distribution.github.io/distribution/about/configuration/#cache
     cache:
-      blobdescriptor: inmemory # could be redis if it's configured
+      blobdescriptor: inmemory
       blobdescriptorsize: 10000
 
     # ref: https://distribution.github.io/distribution/about/configuration/#tag
