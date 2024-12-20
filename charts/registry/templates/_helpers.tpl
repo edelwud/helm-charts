@@ -104,3 +104,30 @@ log:
   {{- end }}
 {{- end }}
 {{- end }}
+
+{{- define "registry.storage" }}
+{{- if .Values.registry.storage }}
+storage:
+  {{ pick .Values.registry.storage .Values.registry.storage.driver | toYaml | nindent 2 }}
+  {{- with .Values.registry.storage.maintenance }}
+  maintenance:
+    {{ toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.registry.storage.delete }}
+  delete:
+    {{ toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.registry.storage.cache }}
+  cache:
+    {{ toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.registry.storage.tag }}
+  tag:
+    {{ toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.registry.storage.redirect }}
+  redirect:
+    {{ toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}

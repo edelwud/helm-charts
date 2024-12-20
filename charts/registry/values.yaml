@@ -30,6 +30,7 @@ registry:
     unstructuredConfig: |
       version: {{ .Values.registry.config.configVersion }}
       {{- include "registry.configLog" . }}
+      {{- include "registry.storage" . }}
   # ref: https://distribution.github.io/distribution/about/configuration/#log
   log:
     accessLog:
@@ -47,15 +48,97 @@ registry:
         password: password
         insecure: true
       hooks:
-#        - type: mail
-#          disabled: true
-#          levels:
-#            - panic
-#          options:
-#            from: sender@example.com
-#            to:
-#              - errors@example.com
+        # - type: mail
+        #   disabled: true
+        #   levels:
+        #     - panic
+        #   options:
+        #     from: sender@example.com
+        #     to:
+        #       - errors@example.com
+  storage:
+    # should be one of filesystem, azure, gcs, s3, inmemory
+    driver: filesystem
 
+    # ref: https://distribution.github.io/distribution/storage-drivers/filesystem/
+    filesystem:
+      rootdirectory: /var/lib/registry
+
+    # ref: https://distribution.github.io/distribution/storage-drivers/azure/
+    azure:
+      accountname: accountname
+      accountkey: base64encodedaccountkey
+      container: containername
+
+    # ref: https://distribution.github.io/distribution/storage-drivers/gcs/
+    gcs:
+      bucket: bucketname
+      keyfile: /path/to/keyfile
+      credentials:
+        type: service_account
+        project_id: project_id_string
+        private_key_id: private_key_id_string
+        private_key: private_key_string
+        client_email: client@example.com
+        client_id: client_id_string
+        auth_uri: http://example.com/auth_uri
+        token_uri: http://example.com/token_uri
+        auth_provider_x509_cert_url: http://example.com/provider_cert_url
+        client_x509_cert_url: http://example.com/client_cert_url
+      rootdirectory: /gcs/object/name/prefix
+
+    # ref: https://distribution.github.io/distribution/storage-drivers/s3/
+    # instead of providing access and secret keys directly here better to use
+    # environment variables or service account irsa roles (AWS EKS only)
+    s3:
+      accesskey: awsaccesskey
+      secretkey: awssecretkey
+      region: us-west-1
+      regionendpoint: http://myobjects.local
+      forcepathstyle: true
+      accelerate: false
+      bucket: bucketname
+      encrypt: true
+      keyid: mykeyid
+      secure: true
+      v4auth: true
+      chunksize: 5242880
+      multipartcopychunksize: 33554432
+      multipartcopymaxconcurrency: 100
+      multipartcopythresholdsize: 33554432
+      rootdirectory: /s3/object/name/prefix
+      loglevel: debug
+
+    # has no parameters
+    # ref: https://distribution.github.io/distribution/storage-drivers/inmemory/
+    inmemory:
+
+    # ref: https://distribution.github.io/distribution/about/configuration/#maintenance
+    maintenance:
+      uploadpurging:
+        enabled: true
+        age: 168h
+        interval: 24h
+        dryrun: false
+      readonly:
+        enabled: false
+
+    # ref: https://distribution.github.io/distribution/about/configuration/#delete
+    delete:
+      enabled: true
+
+    # ref: https://distribution.github.io/distribution/about/configuration/#cache
+    cache:
+      blobdescriptor: inmemory # could be redis if it's configured
+      blobdescriptorsize: 10000
+
+    # ref: https://distribution.github.io/distribution/about/configuration/#tag
+    tag:
+      concurrencylimit: 8
+
+    # ref: https://distribution.github.io/distribution/about/configuration/#redirect
+    redirect:
+      disable: true
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
