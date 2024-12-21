@@ -46,12 +46,28 @@ spec:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
+            - name: config
+              mountPath: /etc/distribution/config.yml
+              subPath: config.yml
+              readOnly: true
+          {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.volumes }}
       volumes:
+        - name: config
+          {{- if eq .Values.registry.config.kind "Secret" }}
+          secret:
+            secretName: {{ include "registry.configName" . }}
+          {{- end }}
+          {{- if eq .Values.registry.config.kind "ConfigMap" }}
+          configMap:
+            name: {{ include "registry.configName" . }}
+            items:
+              - key: config.yml
+                path: config.yml
+          {{- end }}
+      {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}

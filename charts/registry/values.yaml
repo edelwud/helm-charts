@@ -31,6 +31,8 @@ registry:
       version: {{ .Values.registry.config.configVersion }}
       {{- include "registry.configLog" . }}
       {{- include "registry.storage" . }}
+      http:
+        {{ toYaml .Values.registry.http | nindent 2 }}
   # ref: https://distribution.github.io/distribution/about/configuration/#log
   log:
     accessLog:
@@ -129,7 +131,7 @@ registry:
 
     # ref: https://distribution.github.io/distribution/about/configuration/#cache
     cache:
-      blobdescriptor: inmemory # could be redis if it's configured
+      blobdescriptor: inmemory
       blobdescriptorsize: 10000
 
     # ref: https://distribution.github.io/distribution/about/configuration/#tag
@@ -139,6 +141,8 @@ registry:
     # ref: https://distribution.github.io/distribution/about/configuration/#redirect
     redirect:
       disable: true
+  http:
+    addr: 0.0.0.0:{{ .Values.service.port }}
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
