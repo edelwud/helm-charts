@@ -55,4 +55,18 @@ entries:
     urls:
     - https://github.com/edelwud/helm-charts/releases/download/registry-0.1.0/registry-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-21T16:35:06.592116645Z"
+  vm-proxy-auth:
+  - apiVersion: v2
+    appVersion: edge
+    created: "2025-08-20T21:47:10.082791735Z"
+    description: A Helm chart for Kubernetes
+    digest: 2a65b4c8fec572cae0b5c189281f8ac53dd30577572ce81976d5b7f0b32e6be2
+    maintainers:
+    - email: yersh.maks@gmail.com
+      name: edelwud
+    name: vm-proxy-auth
+    type: application
+    urls:
+    - https://github.com/edelwud/helm-charts/releases/download/vm-proxy-auth-0.1.0/vm-proxy-auth-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-08-20T21:47:10.08280502Z"
