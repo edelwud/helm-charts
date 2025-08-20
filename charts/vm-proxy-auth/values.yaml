@@ -38,13 +38,13 @@ config:
     validate_audience: false
     validate_issuer: true
     required_issuer: "https://keycloak:8080/realms/staff"
-    required_audience: [ ]
+    required_audience: []
     token_ttl: "1h"
     cache_ttl: "5m"
     user_groups_claim: "groups"
 
   tenant_mappings:
-    - groups: [ "developers" ]
+    - groups: ["developers"]
       vm_tenants:
         - account_id: "2000"
       read_only: false
