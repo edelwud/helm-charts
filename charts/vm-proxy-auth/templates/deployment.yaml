@@ -13,10 +13,11 @@ spec:
       {{- include "vm-proxy-auth.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
+        checksum/config: {{ include "vm-proxy-auth.config.checksum" . | sha256sum }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       labels:
         {{- include "vm-proxy-auth.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
@@ -52,9 +53,9 @@ spec:
           volumeMounts:
             - mountPath: /etc/vm-proxy-auth
               name: vm-proxy-auth-config
-          {{- with .Values.volumeMounts }}
+            {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
-          {{- end }}
+            {{- end }}
       volumes:
         - name: vm-proxy-auth-config
           configMap:
@@ -62,9 +63,9 @@ spec:
             items:
               - key: config.yaml
                 path: config.yaml
-      {{- with .Values.volumes }}
+        {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
