@@ -57,6 +57,19 @@ entries:
     version: 0.1.0
   vm-proxy-auth:
   - apiVersion: v2
+    appVersion: 0.2.5
+    created: "2025-08-25T09:51:04.945345065Z"
+    description: A Helm chart for VictoriaMetrics Proxy Auth
+    digest: 0528a7e794bec28c736493f2d6c138d06d9104287e0182dfe59632e80edad23b
+    maintainers:
+    - email: yersh.maks@gmail.com
+      name: edelwud
+    name: vm-proxy-auth
+    type: application
+    urls:
+    - https://github.com/edelwud/helm-charts/releases/download/vm-proxy-auth-0.1.2/vm-proxy-auth-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     appVersion: edge
     created: "2025-08-21T11:59:19.224836832Z"
     description: A Helm chart for VictoriaMetrics Proxy Auth
@@ -82,4 +95,4 @@ entries:
     urls:
     - https://github.com/edelwud/helm-charts/releases/download/vm-proxy-auth-0.1.0/vm-proxy-auth-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-21T11:59:19.224848664Z"
+generated: "2025-08-25T09:51:04.945360123Z"
